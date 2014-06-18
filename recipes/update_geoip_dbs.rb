@@ -10,9 +10,9 @@ sources_by_file = {'GeoIPv6.dat' => 'http://geolite.maxmind.com/download/geoip/d
 # In testing we sometimes get 403s from rate limiting on maxmind.
 # One workaround is to use a simple server locally to serve the zipped versions of the files
 # Uncomment the below and replace with the right IP address to use such an alternate server.
-sources_by_file = {'GeoIPv6.dat' => 'http://192.168.0.237:8000/GeoIPv6.dat.gz',
-                   'GeoLiteCityv6.dat' => 'http://192.168.0.237:8000/GeoLiteCityv6.dat.gz',
-                   'GeoIPASNumv6.dat' => 'http://192.168.0.237:8000/GeoIPASNumv6.dat.gz'}
+#sources_by_file = {'GeoIPv6.dat' => 'http://192.168.0.237:8000/GeoIPv6.dat.gz',
+#                   'GeoLiteCityv6.dat' => 'http://192.168.0.237:8000/GeoLiteCityv6.dat.gz',
+#                   'GeoIPASNumv6.dat' => 'http://192.168.0.237:8000/GeoIPASNumv6.dat.gz'}
 
 directory destination_dir do
     action :create
