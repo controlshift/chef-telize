@@ -46,7 +46,7 @@ end
 bash 'configure_nginx_realip' do
     lb_subnet = '10.0.2.2'
     code <<-EOH
-        sed -i 's/set_real_ip_from 10.0.0.0\/8; # Put your LB network here/set_real_ip_from #{lb_subnet};/' /etc/nginx/sites-available/telize_x-forwarded-for
+        sed -i 's%set_real_ip_from 10.0.0.0/8; # Put your LB network here%set_real_ip_from #{lb_subnet};%' /etc/nginx/sites-available/telize_x-forwarded-for
         EOH
 end
 
