@@ -31,8 +31,13 @@ cookbook_file '/etc/nginx/conf.d/http_geoip.conf' do
     mode '0644'
 end
 
-# Enable the telize virtual server in nginx
+# Enable the telize virtual server in nginx, and disable the 'default' virtal server
 link '/etc/nginx/sites-enabled/telize' do
     to '/etc/nginx/sites-available/telize'
     link_type :symbolic
+    action :create
+end
+
+link '/etc/nginx/sites-enabled/default' do
+    action :delete
 end
