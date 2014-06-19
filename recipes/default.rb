@@ -26,8 +26,12 @@ include_recipe 'telize::git_update'
 # Add nginx config that includes timezone.conf and geoIP settings
 # Note original telize instructions update core nginx.conf, but a better practice is
 # to put a separate file in conf.d.  These files are included by nginx.conf.
+config_filename = if node['telize']['ipv6?']
+                  then 'nginx-telize-ipv6.conf'
+                  else 'nginx-telize.conf'
+                  end
 cookbook_file '/etc/nginx/conf.d/http_geoip.conf' do
-    source if node['telize']['ipv6?'] then 'nginx-telize-ipv6.conf' else 'nginx-telize.conf' end
+    source config_filename
     mode '0644'
 end
 
