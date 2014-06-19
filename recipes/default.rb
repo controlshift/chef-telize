@@ -15,9 +15,7 @@ package 'nginx-extras' do
 end
 
 # Install lua cjson module
-package 'lua-cjson' do
-    action :install
-end
+include_recipe 'telize::lua_cjson'
 
 # GeoIP databases
 include_recipe 'telize::update_geoip_dbs'

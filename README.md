@@ -6,7 +6,7 @@ Chef cookbook for an nginx server doing IP geolocation using telize
 Requirements
 ------------
 
-This is known to work on Ubunty 14.04 Trusty.  It should work on debian-based linuxes in general; hasn't been tested on other OSes.
+This cookbook is known to work on Ubuntu 12.04 Precise and 14.04 Trusty.
 
 Attributes
 ----------
