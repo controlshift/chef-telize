@@ -2,7 +2,7 @@
 # Cookbook Name:: telize
 # Recipe:: default
 # Installs telize geolocation service powered by nginx
-# See telize documentation: https://github.com/fcambus/telize
+# See telize documentation: https://github.com/M6Web/telize
 #
 # Copyright 2014, YOUR_COMPANY_NAME
 #
@@ -20,7 +20,7 @@ include_recipe 'telize::lua_cjson'
 # GeoIP databases
 include_recipe 'telize::update_geoip_dbs'
 
-# Pull in any updates from the https://github.com/fcambus/telize repo
+# Pull in any updates from the https://github.com/M6Web/telize repo
 include_recipe 'telize::git_update'
 
 # Add nginx config that includes timezone.conf and geoIP settings

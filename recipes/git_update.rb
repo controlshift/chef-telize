@@ -1,7 +1,7 @@
 #
 # Cookbook Name:: telize
 # Recipe:: git_update
-# Pull in any updates from the https://github.com/fcambus/telize repo
+# Pull in any updates from the https://github.com/M6Web/telize repo
 #
 
 package 'git' do
@@ -12,7 +12,7 @@ checkout_location = File.join(Chef::Config['file_cache_path'], 'telize')
 
 # Sync our clone
 git checkout_location do
-    repository 'https://github.com/fcambus/telize.git'
+    repository 'https://github.com/M6Web/telize.git'
     action :sync
 end
 
