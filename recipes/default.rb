@@ -27,7 +27,7 @@ include_recipe 'telize::git_update'
 # Note original telize instructions update core nginx.conf, but a better practice is
 # to put a separate file in conf.d.  These files are included by nginx.conf.
 cookbook_file '/etc/nginx/conf.d/http_geoip.conf' do
-    source 'nginx-telize.conf'
+    source if node['telize']['ipv6?'] then 'nginx-telize-ipv6.conf' else 'nginx-telize.conf' end
     mode '0644'
 end
 
