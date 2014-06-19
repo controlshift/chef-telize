@@ -42,6 +42,14 @@ link '/etc/nginx/sites-enabled/default' do
     action :delete
 end
 
+# Enable reading of clients' IPs from whatever subnet our LB belongs to
+bash 'configure_nginx_realip' do
+    lb_subnet = '10.0.2.2'
+    code <<-EOH
+        sed -i 's/set_real_ip_from 10.0.0.0\/8; # Put your LB network here/set_real_ip_from #{lb_subnet};/' /etc/nginx/sites-available/telize_x-forwarded-for
+        EOH
+end
+
 # Start the nginx service
 service 'nginx' do
     supports :status => true, :restart => true, :reload => true
