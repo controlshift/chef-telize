@@ -17,7 +17,7 @@ git checkout_location do
 end
 
 # Tell chef where to put the files that come from the git repo
-file_to_destination = {'telize' => '/etc/nginx/sites-available',
+file_to_destination = {'telize_x-forwarded-for' => '/etc/nginx/sites-available',
                        'timezone.conf' => '/etc/nginx'}
 
 file_to_destination.each do |filename, destination|
