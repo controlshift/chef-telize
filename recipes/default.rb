@@ -49,6 +49,7 @@ end
 # Enable reading of clients' IPs from whatever subnet our LB belongs to
 bash 'configure_nginx_realip' do
     lb_subnet = node['telize']['lb_subnet']
+    # we use sed to do this string replacement to avoid forking the upstream codebase. 
     code <<-EOH
         sed -i 's%set_real_ip_from 10.0.0.0/8; # Put your LB network here%set_real_ip_from #{lb_subnet};%' /etc/nginx/sites-available/telize_x-forwarded-for
         EOH
