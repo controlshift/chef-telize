@@ -3,6 +3,12 @@ telize CHANGELOG
 
 This file is used to list changes made in each version of the telize cookbook.
 
+0.2.0
+-----
+Changes for compatibility with Ubuntu 12.04:
+- Change lua-cjson install method
+- Use IPv4-only GeoIP databases
+
 0.1.0
 -----
 - [your_name] - Initial release of telize
