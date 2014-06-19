@@ -3,6 +3,12 @@ telize CHANGELOG
 
 This file is used to list changes made in each version of the telize cookbook.
 
+0.3.0
+-----
+Changes so that this cookbook stands alone without requiring the nginx cookbook
+- Start nginx at the end of the telize::default recipe
+- Disable the default nginx server
+
 0.2.0
 -----
 Changes for compatibility with Ubuntu 12.04:
