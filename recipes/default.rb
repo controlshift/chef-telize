@@ -33,7 +33,7 @@ end
 
 # Enable the telize virtual server in nginx, and disable the 'default' virtal server
 link '/etc/nginx/sites-enabled/telize' do
-    to '/etc/nginx/sites-available/telize'
+    to '/etc/nginx/sites-available/telize_x-forwarded-for'
     link_type :symbolic
     action :create
 end
