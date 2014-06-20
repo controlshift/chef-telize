@@ -5,21 +5,31 @@
 
 destination_dir = '/usr/share/GeoIP/'
 
-# Ubuntu 12.04's version of libgeoip can't handle ipv6, so we just use the ipv4-only databases
-# TODO: This could be a cookbook attribute
-#sources_by_file = {'GeoIPv6.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz',
-#                   'GeoLiteCityv6.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz',
-#                   'GeoIPASNumv6.dat' => 'http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNumv6.dat.gz'}
-sources_by_file = {'GeoIP.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz',
-                   'GeoLiteCity.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz',
-                   'GeoIPASNum.dat' => 'http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz'}
+if node['telize']['ipv6?']
+    # Use databases that support IPv6 and IPv4
+    sources_by_file = {'GeoIPv6.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz',
+                       'GeoLiteCityv6.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz',
+                       'GeoIPASNumv6.dat' => 'http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNumv6.dat.gz'}
 
-# In testing we sometimes get 403s from rate limiting on maxmind.
-# One workaround is to use a simple server locally to serve the zipped versions of the files
-# Uncomment the below and replace with the right IP address to use such an alternate server.
-#sources_by_file = {'GeoIP.dat' => 'http://192.168.0.237:8000/GeoIP.dat.gz',
-#                   'GeoLiteCity.dat' => 'http://192.168.0.237:8000/GeoLiteCity.dat.gz',
-#                   'GeoIPASNum.dat' => 'http://192.168.0.237:8000/GeoIPASNum.dat.gz'}
+    # In testing we sometimes get 403s from rate limiting on maxmind.
+    # One workaround is to use a simple server locally to serve the zipped versions of the files
+    # Uncomment the below and replace with the right IP address to use such an alternate server.
+    #sources_by_file = {'GeoIPv6.dat' => 'http://192.168.0.237:8000/GeoIPv6.dat.gz',
+    #                   'GeoLiteCityv6.dat' => 'http://192.168.0.237:8000/GeoLiteCityv6.dat.gz',
+    #                   'GeoIPASNumv6.dat' => 'http://192.168.0.237:8000/GeoIPASNumv6.dat.gz'}
+else
+    # Use databases that only support IPv4.  Necessary on some older platforms.
+    sources_by_file = {'GeoIP.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz',
+                       'GeoLiteCity.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz',
+                       'GeoIPASNum.dat' => 'http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz'}
+
+    # In testing we sometimes get 403s from rate limiting on maxmind.
+    # One workaround is to use a simple server locally to serve the zipped versions of the files
+    # Uncomment the below and replace with the right IP address to use such an alternate server.
+    #sources_by_file = {'GeoIP.dat' => 'http://192.168.0.237:8000/GeoIP.dat.gz',
+    #                   'GeoLiteCity.dat' => 'http://192.168.0.237:8000/GeoLiteCity.dat.gz',
+    #                   'GeoIPASNum.dat' => 'http://192.168.0.237:8000/GeoIPASNum.dat.gz'}
+end
 
 directory destination_dir do
     action :create

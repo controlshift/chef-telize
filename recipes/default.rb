@@ -23,11 +23,20 @@ include_recipe 'telize::update_geoip_dbs'
 # Pull in any updates from the https://github.com/M6Web/telize repo
 include_recipe 'telize::git_update'
 
-# Add nginx config that includes timezone.conf and geoIP settings
+# Add nginx config files.
 # Note original telize instructions update core nginx.conf, but a better practice is
-# to put a separate file in conf.d.  These files are included by nginx.conf.
+# to put separate files in conf.d.  All files in /etc/nginx/conf.d are included by nginx.conf.
+geoip_config_filename = if node['telize']['ipv6?']
+                        then 'nginx-geoip-dbs-ipv6.conf'
+                        else 'nginx-geoip-dbs.conf'
+                        end
 cookbook_file '/etc/nginx/conf.d/http_geoip.conf' do
-    source 'nginx-telize.conf'
+    source geoip_config_filename
+    mode '0644'
+end
+
+cookbook_file '/etc/nginx/conf.d/load_timezones.conf' do
+    source 'nginx-include-timezones.conf'
     mode '0644'
 end
 
@@ -44,7 +53,8 @@ end
 
 # Enable reading of clients' IPs from whatever subnet our LB belongs to
 bash 'configure_nginx_realip' do
-    lb_subnet = '172.31.32.0/18'
+    lb_subnet = node['telize']['lb_subnet']
+    # we use sed to do this string replacement to avoid forking the upstream codebase. 
     code <<-EOH
         sed -i 's%set_real_ip_from 10.0.0.0/8; # Put your LB network here%set_real_ip_from #{lb_subnet};%' /etc/nginx/sites-available/telize_x-forwarded-for
         EOH
