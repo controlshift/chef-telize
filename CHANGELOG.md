@@ -3,6 +3,11 @@ telize CHANGELOG
 
 This file is used to list changes made in each version of the telize cookbook.
 
+0.4.0
+-----
+- Use the x-forwarded-for header to get the client's IP address when behind a load balancer
+- Make IPv4-only vs. support-IPv6-too configurable
+
 0.3.0
 -----
 Changes so that this cookbook stands alone without requiring the nginx cookbook
