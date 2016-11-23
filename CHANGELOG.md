@@ -3,6 +3,10 @@ telize CHANGELOG
 
 This file is used to list changes made in each version of the telize cookbook.
 
+0.4.1
+-----
+- Fix permissions so that nginx can see cjson
+
 0.4.0
 -----
 - Use the x-forwarded-for header to get the client's IP address when behind a load balancer
