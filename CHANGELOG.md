@@ -3,6 +3,10 @@ telize CHANGELOG
 
 This file is used to list changes made in each version of the telize cookbook.
 
+1.0.0
+-----
+Use built-in packages for lua modules. Drop support for Ubuntu 12.04
+
 0.4.1
 -----
 - Fix permissions so that nginx can see cjson
