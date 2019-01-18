@@ -37,8 +37,6 @@ systemd_unit 'kore.service' do
   StandardOutput=syslog
   StandardError=syslog
   SyslogIdentitifer=kore
-  User=telize
-  Group=telize
 
   [Install]
   WantedBy=multi-user.target
