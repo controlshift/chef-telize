@@ -17,4 +17,5 @@ end
 bash 'install kore' do
   code 'make && make install'
   cwd '/tmp/kore-3.2.1'
+  environment 'NOTLS' => '1'
 end
