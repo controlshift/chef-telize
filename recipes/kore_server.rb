@@ -4,7 +4,7 @@ bash 'build server' do
 end
 
 systemd_unit 'kore.service' do
-  context <<~CONTENT
+  content <<~CONTENT
   [Unit]
   Description=Kore web server
   Requires=network.target
