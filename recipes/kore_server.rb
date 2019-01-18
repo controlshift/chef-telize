@@ -11,7 +11,7 @@ systemd_unit 'kore.service' do
   After=syslog.target network.target
 
   [Service]
-  Type=simple
+  Type=forking
   WorkingDirectory=/srv/telize
   ExecStart=/bin/bash -lc 'kore -c telize.config'
   StandardOutput=syslog
