@@ -23,6 +23,11 @@ bash 'build server' do
   cwd '/srv/telize'
 end
 
+cookbook_file '/etc/finish_kore_config.sh' do
+  source 'finish_kore_config.sh'
+  mode '0755'
+end
+
 systemd_unit 'kore.service' do
   content <<~CONTENT
   [Unit]
@@ -42,5 +47,5 @@ systemd_unit 'kore.service' do
   WantedBy=multi-user.target
   CONTENT
 
-  action [:create, :enable]
+  action [:create]
 end
