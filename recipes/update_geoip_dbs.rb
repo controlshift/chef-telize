@@ -1,4 +1,4 @@
-directory_path = '/var/db/GeoIP'
+directory_path = '/srv/telize/var/db/GeoIP'
 
 directory directory_path do
   recursive true
@@ -18,5 +18,6 @@ bash 'copy files to where telize expects them to be' do
   code <<~CODE
   cp /tmp/GeoLite2-City_*/GeoLite2-City.mmdb #{directory_path}/
   cp /tmp/GeoLite2-ASN_*/GeoLite2-ASN.mmdb #{directory_path}/
+  chown -R telize:telize #{directory_path}
   CODE
 end
