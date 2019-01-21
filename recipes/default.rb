@@ -8,6 +8,7 @@
 #
 # All rights reserved - Do Not Redistribute
 
+include_recipe 'telize::install_minisign'
 include_recipe 'telize::install_kore'
 include_recipe 'telize::libmaxmind'
 include_recipe 'telize::install_telize'
