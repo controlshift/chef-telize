@@ -4,7 +4,7 @@ maintainer_email 'talk@controlshiftlabs.com'
 license          'All rights reserved'
 description      'Installs/Configures telize'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '2.0.0'
+version          '2.1.0'
 
 depends 'tar'
 depends 'user'
