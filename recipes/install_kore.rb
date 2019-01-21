@@ -1,10 +1,5 @@
 kore_version = node['telize']['kore_version']
 
-user_account 'telize' do
-  create_group true
-  shell '/bin/bash'
-end
-
 remote_file '/tmp/kore-tarball.tar.gz.minisig' do
   source "https://kore.io/releases/kore-#{kore_version}.tar.gz.minisig"
 end
