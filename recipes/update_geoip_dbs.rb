@@ -1,62 +1,23 @@
-#
-# Cookbook Name:: telize
-# Recipe:: update_geoip_dbs
-# Installs the latest version of the GeoIP databases.
+directory_path = '/srv/telize/var/db/GeoIP'
 
-destination_dir = '/usr/share/GeoIP/'
-
-if node['telize']['ipv6?']
-    # Use databases that support IPv6 and IPv4
-    sources_by_file = {'GeoIPv6.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz',
-                       'GeoLiteCityv6.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz',
-                       'GeoIPASNumv6.dat' => 'http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNumv6.dat.gz'}
-
-    # In testing we sometimes get 403s from rate limiting on maxmind.
-    # One workaround is to use a simple server locally to serve the zipped versions of the files
-    # Uncomment the below and replace with the right IP address to use such an alternate server.
-    #sources_by_file = {'GeoIPv6.dat' => 'http://192.168.0.237:8000/GeoIPv6.dat.gz',
-    #                   'GeoLiteCityv6.dat' => 'http://192.168.0.237:8000/GeoLiteCityv6.dat.gz',
-    #                   'GeoIPASNumv6.dat' => 'http://192.168.0.237:8000/GeoIPASNumv6.dat.gz'}
-else
-    # Use databases that only support IPv4.  Necessary on some older platforms.
-    sources_by_file = {'GeoIP.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz',
-                       'GeoLiteCity.dat' => 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz',
-                       'GeoIPASNum.dat' => 'http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz'}
-
-    # In testing we sometimes get 403s from rate limiting on maxmind.
-    # One workaround is to use a simple server locally to serve the zipped versions of the files
-    # Uncomment the below and replace with the right IP address to use such an alternate server.
-    #sources_by_file = {'GeoIP.dat' => 'http://192.168.0.237:8000/GeoIP.dat.gz',
-    #                   'GeoLiteCity.dat' => 'http://192.168.0.237:8000/GeoLiteCity.dat.gz',
-    #                   'GeoIPASNum.dat' => 'http://192.168.0.237:8000/GeoIPASNum.dat.gz'}
+directory directory_path do
+  recursive true
 end
 
-directory destination_dir do
-    action :create
+tar_extract 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz' do
+  target_dir '/tmp'
+  compress_char 'z'
 end
 
-sources_by_file.each do |destination_filename, source_url|
-    zipped_filename = destination_filename + '.gz'
-    zipped_filepath = "#{Chef::Config['file_cache_path']}/#{zipped_filename}"
+tar_extract 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz' do
+  target_dir '/tmp'
+  compress_char 'z'
+end
 
-    # Retrieve the zipped DB, telling the server to only bother if it has changed since we last asked.
-    # TODO: If the server is down or we've been rate-limited, this will fail the whole recipe.  It would
-    # be nice to have a fallback where if we have /any/ copy of the DB already (zipped, old, whatever), we
-    # use that and move on.
-    remote_file zipped_filepath do
-        source source_url
-        use_conditional_get true
-        use_last_modified true
-    end
-
-    # If we got a new zipped DB, unzip it to where we need it to be
-    destination_filepath = File.join(destination_dir, destination_filename)
-    bash 'extract_db' do
-        cwd ::File.dirname(zipped_filepath)
-        code <<-EOH
-            gunzip -c #{zipped_filename} > #{destination_filepath}
-            EOH
-        only_if { not ::File.exists?(destination_filepath) or
-                  ::File.mtime(destination_filepath) < ::File.mtime(zipped_filepath)}
-    end
+bash 'copy files to where telize expects them to be' do
+  code <<~CODE
+  cp /tmp/GeoLite2-City_*/GeoLite2-City.mmdb #{directory_path}/
+  cp /tmp/GeoLite2-ASN_*/GeoLite2-ASN.mmdb #{directory_path}/
+  chown -R telize:telize #{directory_path}
+  CODE
 end
