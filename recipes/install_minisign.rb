@@ -1,4 +1,5 @@
 apt_package 'libsodium-dev'
+apt_package 'pkg-config'
 apt_package 'cmake'
 
 git '/tmp/minisign' do
@@ -15,4 +16,5 @@ bash 'install minisign' do
   make install
   CODE
   cwd '/tmp/minisign'
+  environment 'PKG_CONFIG_EXECUTABLE' => '/usr/bin/pkg-config'
 end
