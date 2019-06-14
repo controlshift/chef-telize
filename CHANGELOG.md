@@ -3,6 +3,14 @@ telize CHANGELOG
 
 This file is used to list changes made in each version of the telize cookbook.
 
+2.1.1
+-----
+Fix for cmake finding pkg-config
+
+2.1.0
+-----
+Rewrite for the current version of Telize
+
 1.0.0
 -----
 Use built-in packages for lua modules. Drop support for Ubuntu 12.04
