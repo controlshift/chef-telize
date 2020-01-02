@@ -1,50 +1,25 @@
 directory_path = '/srv/telize/var/db/GeoIP'
 
 directory directory_path do
+  owner 'telize'
+  group 'telize'
   recursive true
 end
 
-apt_package 'geoipupdate' do
-  notifies :create, 'template[/usr/local/etc/GeoIP.conf]', :immediately
-end
+apt_package 'geoipupdate'
 
+# TODO: Figure out if the EditionIDs are all needed, or can we skip some?
 template '/usr/local/etc/GeoIP.conf' do
   source 'GeoIP.conf.erb'
-  variables({
-              account_id: account_id,
-              license_key: license_key,
-              edition_ids: edition_ids,
-              directory_path: directory_path
-            })
-
-  action :nothing
-  notifies :run, 'bash[geoipupdate]', :immediately
+  variables({ directory_path: directory_path })
 end
 
-bash 'geoipupdate' do
-  code <<~CODE
-  /usr/local/bin/geoipupdate
-  CODE
-
-  action :nothing
+cron 'run geoipupdate' do
+  # Run once a week, on Sunday morning at 4AM UTC
+  weekday '0'
+  hour '4'
+  minute '0'
+  #shell '/bin/bash'
+  #path '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin'
+  command '/usr/local/bin/geoipupdate'
 end
-
-# TODO: set up a cron job to run geoipupdate weekly
-
-#tar_extract 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz' do
-#  target_dir '/tmp'
-#  compress_char 'z'
-#end
-#
-#tar_extract 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz' do
-#  target_dir '/tmp'
-#  compress_char 'z'
-#end
-#
-#bash 'copy files to where telize expects them to be' do
-#  code <<~CODE
-#  cp /tmp/GeoLite2-City_*/GeoLite2-City.mmdb #{directory_path}/
-#  cp /tmp/GeoLite2-ASN_*/GeoLite2-ASN.mmdb #{directory_path}/
-#  chown -R telize:telize #{directory_path}
-#  CODE
-#end
