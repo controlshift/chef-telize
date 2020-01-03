@@ -1,0 +1,9 @@
+AccountID ACCOUNT_ID_PLACEHOLDER
+LicenseKey LICENSE_KEY_PLACEHOLDER
+
+# Even though we don't care about the ASN information for the purposes of what we return,
+# the telize code requires ASN and City databases, so we must include both.
+# See https://github.com/fcambus/telize#geoip2-databases
+EditionIDs GeoLite2-ASN GeoLite2-City GeoLite2-Country
+
+DatabaseDirectory <%= @directory_path %>

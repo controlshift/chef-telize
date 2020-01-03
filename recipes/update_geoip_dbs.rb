@@ -1,23 +1,27 @@
 directory_path = '/srv/telize/var/db/GeoIP'
 
 directory directory_path do
+  owner 'telize'
+  group 'telize'
   recursive true
 end
 
-tar_extract 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz' do
-  target_dir '/tmp'
-  compress_char 'z'
+# This package will install a default /etc/GeoIP.conf, so we must
+# wait until it's installed to overwrite it with our own.
+apt_package 'geoipupdate' do
+  notifies :create, 'template[/etc/GeoIP.conf]', :immediately
 end
 
-tar_extract 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-ASN.tar.gz' do
-  target_dir '/tmp'
-  compress_char 'z'
+template '/etc/GeoIP.conf' do
+  source 'GeoIP.conf.erb'
+  variables({ directory_path: directory_path })
+  action :nothing
 end
 
-bash 'copy files to where telize expects them to be' do
-  code <<~CODE
-  cp /tmp/GeoLite2-City_*/GeoLite2-City.mmdb #{directory_path}/
-  cp /tmp/GeoLite2-ASN_*/GeoLite2-ASN.mmdb #{directory_path}/
-  chown -R telize:telize #{directory_path}
-  CODE
+cron 'run geoipupdate' do
+  # Run once a week, on Sunday morning at 4AM UTC
+  weekday '0'
+  hour '4'
+  minute '0'
+  command '/usr/bin/geoipupdate'
 end
