@@ -41,7 +41,7 @@ systemd_unit 'kore.service' do
   ExecStart=/bin/bash -lc 'kore -c telize.config'
   StandardOutput=syslog
   StandardError=syslog
-  SyslogIdentitifer=kore
+  SyslogIdentifier=kore
 
   [Install]
   WantedBy=multi-user.target
