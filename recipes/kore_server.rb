@@ -23,9 +23,6 @@ bash 'build server' do
   cwd '/srv/telize'
 end
 
-# needed for ifconfig, which finish_core_config.sh uses
-apt_package 'net-tools'
-
 cookbook_file '/etc/finish_kore_config.sh' do
   source 'finish_kore_config.sh'
   mode '0755'
