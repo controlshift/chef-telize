@@ -3,7 +3,7 @@ apt_package 'pkg-config'
 apt_package 'cmake'
 
 git '/tmp/minisign' do
-  repository 'git://github.com/jedisct1/minisign.git'
+  repository 'https://github.com/jedisct1/minisign.git'
   revision 'master'
 end
 
