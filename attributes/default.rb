@@ -1,1 +1,1 @@
-default['telize']['kore_version'] = '3.3.1'
+default['telize']['kore_version'] = '4.2.2'
