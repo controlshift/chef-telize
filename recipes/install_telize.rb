@@ -8,7 +8,7 @@ end
 
 git '/srv/telize' do
   repository 'https://github.com/fcambus/telize.git'
-  revision 'master'
+  revision '3.1.1'
 end
 
 bash 'fix permissions' do
